@@ -16,25 +16,3 @@ envanter = {
     "USB Hub 4 Port": {"stok": 110, "fiyat": 149.90, "kategori": "Aksesuar"},
 }
 
-
-## envanteri dict' te komple gez .items()
-
-envanter_içerik = {urun_adi : ürün_bilgileri for urun_adi , ürün_bilgileri in envanter.items()}
-print(envanter_içerik)
-print("---------Envanter--------")
-for envtr in envanter.items():
-    print(f"{envtr[0]} : {envtr[1]}")
-print(f"Toplam ürün sayisi: {len(envanter)}")
-
-yeni_ürün_adi = input('Ürün adi: ')
-stok_miktari = int(input('Stok Miktari: '))
-fiyat = float(input('Fiyat: '))
-kategori = input('Kategori: ')
-
-envanter[yeni_ürün_adi] = {'stok': stok_miktari , 'fiyat': fiyat , 'kategori': kategori }
-
-print('-----Güncellenmiş Envanter ------')
-for envtr in envanter.items():
-    print(f"{envtr[0]} : {envtr[1]}")
-print(f"Toplam ürün sayisi: {len(envanter)}")
-
