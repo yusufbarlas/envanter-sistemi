@@ -1,3 +1,4 @@
+from decimal import Decimal, InvalidOperation
 import veri
 import islemler
 import dosya_islemleri
@@ -18,27 +19,29 @@ def ana_menu():
             if kullanici_sorusu == 1:
                 ad = input("Ürün adi girin: ")
                 stok = int(input("Stok adedi girin: "))
-                fiyat = float(input("Fiyat girin: "))
+                fiyat = Decimal(input("Fiyat girin: "))
                 kategori = input("Kategori girin: ")
                 islemler.urun_ekle(envanter, ad, stok, fiyat, kategori)
                 dosya_islemleri.envanter_kaydet('envanter.json', envanter)
                 print("Ürün eklendi.")
 
             elif kullanici_sorusu == 2:
-                islemler.listele(envanter)
                 print('Envanter Listesi')
+                islemler.listele(envanter)
 
             elif kullanici_sorusu == 3:
                 ad = input("Ürün adi girin: ")
                 miktar = int(input('Stok miktarı girin: '))
-                islemler.stok_giris(envanter, ad, miktar)
+                urun = islemler.urun_bul(envanter, ad)
+                urun.stok_giris(miktar)
                 dosya_islemleri.envanter_kaydet('envanter.json', envanter)
                 print('Stok güncellendi.')
 
             elif kullanici_sorusu == 4:
                 ad = input("Ürün adi girin: ")
                 miktar = int(input('Stok miktarı girin: '))
-                islemler.stok_cikis(envanter, ad, miktar)
+                urun = islemler.urun_bul(envanter, ad)
+                urun.stok_cikis(miktar)
                 dosya_islemleri.envanter_kaydet('envanter.json', envanter)
                 print('Stok çıkışı gerçekleşti.')
 
@@ -54,18 +57,18 @@ def ana_menu():
 
             elif kullanici_sorusu == 7:
                 print('Çıkış yapılıyor...')
-                return 
+                return
 
             else:
                 print('Lütfen geçerli bir tercih numarası girin')
-            
 
         except hatalar.Envanter_Sistemi as e:
             print('Hata:', e)
         except ValueError:
             print('Geçersiz değer: lütfen sayı girin')
+        except InvalidOperation:
+            print('Geçersiz fiyat: lütfen sayı girin')
 
 
 if __name__ == "__main__":
     ana_menu()
-    

@@ -1,31 +1,37 @@
 import json 
+from dataclasses import dataclass , asdict
+from decimal import Decimal , ROUND_HALF_UP
+import islemler
 
-def envanter_kaydet(dosya_adi, envanter):
-    with open(dosya_adi , 'w' , encoding='utf-8') as f :
-        json.dump(envanter , f , ensure_ascii=False , indent=4)
-
+def envanter_kaydet(dosya_adi , envanter):
+    szlk = {}
+   
+    for ad , urun in envanter.items():
+            urun_sozlugu = asdict(urun)
+            del urun_sozlugu['ad']
+            urun_sozlugu['fiyat'] = str(urun.fiyat)
+            szlk[ad] = urun_sozlugu
+    with open (dosya_adi , 'w' , encoding='utf-8') as f:
+        json.dump(szlk , f , ensure_ascii=False , indent=4)
 
 
 def envanter_yukle(dosya_adi, baslangic_verisi):
+
     try:
-        with open (dosya_adi , 'r' , encoding='utf-8') as f:
-            return  json.load(f)
+        with open(dosya_adi, 'r', encoding='utf-8') as f:
+            ham = json.load(f)                      # 1. dosyayı oku
     except FileNotFoundError:
-        envanter_kaydet(dosya_adi , baslangic_verisi)
-        return baslangic_verisi
+        ham = baslangic_verisi      
+    szlk = {}
+    for ad , sözlük in ham.items():
+          fiyat = str(sözlük['fiyat'])
+          prices = Decimal(fiyat).quantize(Decimal('0.01') , rounding= ROUND_HALF_UP)
+          szlk[ad] = islemler.Urun(ad , sözlük['stok'] , prices , sözlük['kategori'])
+    envanter_kaydet(dosya_adi, szlk)
+    return  szlk 
 
 
-if __name__ == "__main__":
-    import veri
+     
 
-    envanter = envanter_yukle("envanter.json", veri.envanter)
-    print("Ürün sayısı:", len(envanter))
-
-    envanter["Test Ürün"] = {"stok": 1, "fiyat": 10.0, "kategori": "Deneme"}
-    envanter_kaydet("envanter.json", envanter)
-
-    tekrar = envanter_yukle("envanter.json", veri.envanter)
-    print("Ürün sayısı:", len(tekrar))
-    print("Test Ürün var mı:", "Test Ürün" in tekrar)
-
-
+    
+    
