@@ -1,19 +1,28 @@
-class Envanter_Sistemi(Exception):
-    pass 
-class UrunBulunamadiError(Envanter_Sistemi):
-    pass
-class UrunZatenVarError(Envanter_Sistemi):
-    pass
-class YetersizStokError(Envanter_Sistemi):
-    pass 
-class NegatifDegerError(Envanter_Sistemi):
-    pass
+class EnvanterSistemiError(Exception):
+    """üst kategori"""
+     
 
-if __name__ == '__main__' :
+class UrunBulunamadiError(EnvanterSistemiError):
+    """Urun yoksa devreye girer."""
+    
+
+class UrunZatenVarError(EnvanterSistemiError):
+    """ Urun varsa devreye girer."""
+    
+
+class YetersizStokError(EnvanterSistemiError):
+    """Stok çıkışında miktar > stok anında hata verir"""
+    
+
+class NegatifDegerError(EnvanterSistemiError):
+    """stok yada fiyat negatifse devreye girer"""
+    
+
+if __name__ == '__main__':
    
     try:
-        raise NegatifDegerError('Negatif değer saptandı , işlem başarısız')
-    except Envanter_Sistemi as e :
-        print('Yakalandı:' , e )
+        raise NegatifDegerError('Negatif değer saptandı, işlem başarısız')
+    except EnvanterSistemiError as e:
+        print('Yakalandı:', e)
 
     

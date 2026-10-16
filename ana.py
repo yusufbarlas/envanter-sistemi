@@ -4,9 +4,10 @@ import islemler
 import dosya_islemleri
 import hatalar
 
+ENVANTER_DOSYASI = 'envanter.json'
 
 def ana_menu():
-    envanter = dosya_islemleri.envanter_yukle('envanter.json', veri.envanter)
+    envanter = dosya_islemleri.envanter_yukle(ENVANTER_DOSYASI, veri.envanter)
     while True:
         try:
             kullanici_sorusu = int(input("Yapmak istediğiniz işlem numarasını girin. \n 1- Ürün Ekle: \n 2- Envanter Listesi: \n"
@@ -22,7 +23,7 @@ def ana_menu():
                 fiyat = Decimal(input("Fiyat girin: "))
                 kategori = input("Kategori girin: ")
                 islemler.urun_ekle(envanter, ad, stok, fiyat, kategori)
-                dosya_islemleri.envanter_kaydet('envanter.json', envanter)
+                dosya_islemleri.envanter_kaydet(ENVANTER_DOSYASI, envanter)
                 print("Ürün eklendi.")
 
             elif kullanici_sorusu == 2:
@@ -34,7 +35,7 @@ def ana_menu():
                 miktar = int(input('Stok miktarı girin: '))
                 urun = islemler.urun_bul(envanter, ad)
                 urun.stok_giris(miktar)
-                dosya_islemleri.envanter_kaydet('envanter.json', envanter)
+                dosya_islemleri.envanter_kaydet(ENVANTER_DOSYASI, envanter)
                 print('Stok güncellendi.')
 
             elif kullanici_sorusu == 4:
@@ -42,13 +43,13 @@ def ana_menu():
                 miktar = int(input('Stok miktarı girin: '))
                 urun = islemler.urun_bul(envanter, ad)
                 urun.stok_cikis(miktar)
-                dosya_islemleri.envanter_kaydet('envanter.json', envanter)
+                dosya_islemleri.envanter_kaydet(ENVANTER_DOSYASI, envanter)
                 print('Stok çıkışı gerçekleşti.')
 
             elif kullanici_sorusu == 5:
                 ad = input("Ürün adi girin: ")
                 islemler.urun_sil(envanter, ad)
-                dosya_islemleri.envanter_kaydet('envanter.json', envanter)
+                dosya_islemleri.envanter_kaydet(ENVANTER_DOSYASI, envanter)
                 print('Ürün silindi.')
 
             elif kullanici_sorusu == 6:
@@ -62,7 +63,7 @@ def ana_menu():
             else:
                 print('Lütfen geçerli bir tercih numarası girin')
 
-        except hatalar.Envanter_Sistemi as e:
+        except hatalar.EnvanterSistemiError as e:
             print('Hata:', e)
         except ValueError:
             print('Geçersiz değer: lütfen sayı girin')

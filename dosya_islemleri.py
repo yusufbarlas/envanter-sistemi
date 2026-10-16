@@ -1,37 +1,55 @@
-import json 
-from dataclasses import dataclass , asdict
-from decimal import Decimal , ROUND_HALF_UP
+import json
+from dataclasses import asdict
+from decimal import Decimal
 import islemler
 
-def envanter_kaydet(dosya_adi , envanter):
-    szlk = {}
-   
-    for ad , urun in envanter.items():
-            urun_sozlugu = asdict(urun)
-            del urun_sozlugu['ad']
-            urun_sozlugu['fiyat'] = str(urun.fiyat)
-            szlk[ad] = urun_sozlugu
-    with open (dosya_adi , 'w' , encoding='utf-8') as f:
-        json.dump(szlk , f , ensure_ascii=False , indent=4)
+
+def envanter_kaydet(dosya_adi, envanter):
+    """Envanteri JSON dosyasına kaydeder.
+
+    Parametreler:
+        dosya_adi (str): Yazılacak dosyanın adı.
+        envanter (dict): {ad: Urun} sözlüğü.
+
+    Döndürür:
+        None. Ad sadece anahtarda tutulur, fiyat metin olarak yazılır.
+    """
+    kayit_verisi = {}
+    for ad, urun in envanter.items():
+        urun_bilgisi = asdict(urun)
+        del urun_bilgisi['ad']
+        urun_bilgisi['fiyat'] = str(urun.fiyat)
+        kayit_verisi[ad] = urun_bilgisi
+
+    with open(dosya_adi, 'w', encoding='utf-8') as f:
+        json.dump(kayit_verisi, f, ensure_ascii=False, indent=4)
 
 
 def envanter_yukle(dosya_adi, baslangic_verisi):
+    """JSON dosyasından envanteri yükler.
 
+    Dosya yoksa başlangıç verisini kullanır ve dosyayı oluşturur.
+
+    Parametreler:
+        dosya_adi (str): Okunacak dosyanın adı.
+        baslangic_verisi (dict): Dosya yoksa kullanılacak
+            {ad: {stok, fiyat, kategori}} sözlüğü.
+
+    Döndürür:
+        dict: {ad: Urun} sözlüğü.
+    """
     try:
         with open(dosya_adi, 'r', encoding='utf-8') as f:
-            ham = json.load(f)                      # 1. dosyayı oku
+            ham_veri = json.load(f)
     except FileNotFoundError:
-        ham = baslangic_verisi      
-    szlk = {}
-    for ad , sözlük in ham.items():
-          fiyat = str(sözlük['fiyat'])
-          prices = Decimal(fiyat).quantize(Decimal('0.01') , rounding= ROUND_HALF_UP)
-          szlk[ad] = islemler.Urun(ad , sözlük['stok'] , prices , sözlük['kategori'])
-    envanter_kaydet(dosya_adi, szlk)
-    return  szlk 
+        ham_veri = baslangic_verisi
 
+    envanter = {}
+    for ad, urun_bilgisi in ham_veri.items():
+        fiyat = islemler.tutar_yuvarla(Decimal(str(urun_bilgisi['fiyat'])))
+        envanter[ad] = islemler.Urun(
+            ad, urun_bilgisi['stok'], fiyat, urun_bilgisi['kategori']
+        )
 
-     
-
-    
-    
+    envanter_kaydet(dosya_adi, envanter)
+    return envanter
