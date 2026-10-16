@@ -87,11 +87,7 @@ def toplam_deger(envanter):
     sonuc = tutar_yuvarla(toplam_urun_degeri)
     return sonuc
 
-def listele(envanter):
-    for ad, urun in envanter.items():
-        print(f'{urun.ad} | Stok:{urun.stok} | Fiyat:{urun.fiyat} TL | Kategori:{urun.kategori}')
-    print(f'Toplam ürün sayisi: {len(envanter)}')
-   
+
     
 
 

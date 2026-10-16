@@ -28,7 +28,7 @@ def envanter_kaydet(dosya_adi, envanter):
 def envanter_yukle(dosya_adi, baslangic_verisi):
     """JSON dosyasından envanteri yükler.
 
-    Dosya yoksa başlangıç verisini kullanır ve dosyayı oluşturur.
+    
 
     Parametreler:
         dosya_adi (str): Okunacak dosyanın adı.
@@ -51,5 +51,5 @@ def envanter_yukle(dosya_adi, baslangic_verisi):
             ad, urun_bilgisi['stok'], fiyat, urun_bilgisi['kategori']
         )
 
-    envanter_kaydet(dosya_adi, envanter)
+   
     return envanter

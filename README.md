@@ -11,9 +11,17 @@ Terminal üzerinden çalışan, basit bir stok/envanter takip programı. Ürün 
 - **hatalar.py** — Envanter sistemine özel hata (exception) sınıflarını tanımlar (örnek: ürün bulunamadı, ürün zaten var, yetersiz stok).
 - **envanter.json** — Programın çalışma zamanında oluşturduğu/güncellediği veri dosyası. Depoya dahil edilmez (`.gitignore` içinde).
 
-## Nasıl Çalıştırılır
+
+## Kurulum ve Çalıştırma
+
+Gereksinim: Python 3.10 veya üstü. Proje sadece standart kütüphaneyi kullanır, dış paket gerekmez.
 
 ```
+git clone <repo-adresi>
+cd Envanter_Sistemi
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 python ana.py
 ```
 

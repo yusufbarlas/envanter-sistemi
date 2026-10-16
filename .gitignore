@@ -1,3 +1,4 @@
 __pycache__/
 envanter.json
 Claude outputs/
+.venv/

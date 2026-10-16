@@ -6,6 +6,13 @@ import hatalar
 
 ENVANTER_DOSYASI = 'envanter.json'
 
+
+def listele(envanter):
+    for ad, urun in envanter.items():
+        print(f'{urun.ad} | Stok:{urun.stok} | Fiyat:{urun.fiyat} TL | Kategori:{urun.kategori}')
+    print(f'Toplam ürün sayisi: {len(envanter)}')
+
+
 def ana_menu():
     envanter = dosya_islemleri.envanter_yukle(ENVANTER_DOSYASI, veri.envanter)
     while True:
@@ -28,7 +35,7 @@ def ana_menu():
 
             elif kullanici_sorusu == 2:
                 print('Envanter Listesi')
-                islemler.listele(envanter)
+                listele(envanter)
 
             elif kullanici_sorusu == 3:
                 ad = input("Ürün adi girin: ")
