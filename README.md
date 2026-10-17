@@ -34,3 +34,6 @@ Program açıldığında ekrana gelen menüden işlem numarasını girerek devam
 5. Ürün Sil
 6. Toplam Stok Değeri
 7. Çıkış
+
+## Kullanılan araçlar
+- Git ve GitHub (sürüm kontrolü)
